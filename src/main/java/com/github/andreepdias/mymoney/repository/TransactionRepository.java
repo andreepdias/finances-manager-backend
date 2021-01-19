@@ -21,10 +21,10 @@ public interface TransactionRepository extends JpaRepository<Transaction, Intege
 
     boolean existsByWalletId(Integer walletId);
 
-    Page<Transaction> findAllByUserIdOrderByDateDesc(Integer userId, Pageable pageable);
+    Page<Transaction> findAllByUserIdOrderByDateDescIdDesc(Integer userId, Pageable pageable);
 
     @Query("SELECT t FROM Transaction t WHERE t.user.id = :userId AND month(t.date) = :month AND year(t.date) = :year")
     List<Transaction> searchByMonthAndYear(Integer userId, Integer month, Integer year);
 
-    List<Transaction> findAllByUserIdAndDateBetweenOrderByDateDesc(Integer userId, LocalDate time, LocalDate time1);
+    List<Transaction> findAllByUserIdAndDateBetweenOrderByDateDescIdDesc(Integer userId, LocalDate time, LocalDate time1);
 }

@@ -41,7 +41,9 @@ public class CategoryService {
     }
 
     public Category insert(Category category){
+        User user = userService.findAuthenticatedUser();
         category.setId(null);
+        category.setUser(user);
         return repository.save(category);
     }
 

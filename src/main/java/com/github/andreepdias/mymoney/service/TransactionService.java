@@ -35,7 +35,7 @@ public class TransactionService {
 
     public Page<Transaction> findPage(PageRequest pageRequest) {
         Integer userId = userService.findAuthenticatedUserId();
-        return repository.findAllByUserIdOrderByDateDesc(userId, pageRequest);
+        return repository.findAllByUserIdOrderByDateDescIdDesc(userId, pageRequest);
     }
 
     public Transaction findById(Integer id) {
@@ -49,7 +49,7 @@ public class TransactionService {
         LocalDate startMonth = LocalDate.of(year, month, 1);
         LocalDate endMonth = startMonth.with(TemporalAdjusters.lastDayOfMonth());
 
-        return repository.findAllByUserIdAndDateBetweenOrderByDateDesc(userId, startMonth, endMonth);
+        return repository.findAllByUserIdAndDateBetweenOrderByDateDescIdDesc(userId, startMonth, endMonth);
     }
 
     public Transaction insert(Transaction transaction){
