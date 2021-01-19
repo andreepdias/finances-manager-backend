@@ -3,6 +3,7 @@ package com.github.andreepdias.mymoney.service;
 import com.github.andreepdias.mymoney.exception.DataConsistencyException;
 import com.github.andreepdias.mymoney.exception.ObjectNotFoundException;
 import com.github.andreepdias.mymoney.model.entity.Category;
+import com.github.andreepdias.mymoney.model.entity.User;
 import com.github.andreepdias.mymoney.repository.CategoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -18,13 +19,16 @@ public class CategoryService {
     private final CategoryRepository repository;
 
     private final TransactionService transactionService;
+    private  final UserService userService;
 
     public List<Category> findAll() {
-        return repository.findAllByOrderByCategoryTypeAscNameAsc();
+        Integer userId = userService.findAuthenticatedUserId();
+        return repository.findAllByUserIdOrderByCategoryTypeAscNameAsc(userId);
     }
 
     public Page<Category> findPage(PageRequest pageRequest) {
-        return repository.findAllByOrderByCategoryTypeAscNameAsc(pageRequest);
+        Integer userId = userService.findAuthenticatedUserId();
+        return repository.findAllByUserIdOrderByCategoryTypeAscNameAsc(userId , pageRequest);
     }
 
     public Category findById(Integer id) {

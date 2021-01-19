@@ -9,6 +9,7 @@ import com.github.andreepdias.mymoney.model.entity.Transaction;
 import com.github.andreepdias.mymoney.model.entity.User;
 import com.github.andreepdias.mymoney.model.entity.Wallet;
 import com.github.andreepdias.mymoney.repository.TransactionRepository;
+import com.github.andreepdias.mymoney.repository.WalletRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -28,6 +29,7 @@ import java.util.List;
 public class TransactionService {
 
     private final TransactionRepository repository;
+    private final WalletRepository walletRepository;
 
     private final UserService userService;
 
@@ -50,27 +52,35 @@ public class TransactionService {
         return repository.findAllByUserIdAndDateBetweenOrderByDateDesc(userId, startMonth, endMonth);
     }
 
-    public boolean existsById(Integer id){
-        return repository.existsById(id);
-    }
-
     public Transaction insert(Transaction transaction){
         User user = userService.findAuthenticatedUser();
         transaction.setUser(user);
         transaction.setId(null);
+
+        transaction.getWallet().addAmount(transaction.getAmount(), transaction.getCategory().getCategoryType());
+        walletRepository.save(transaction.getWallet());
+
         return repository.save(transaction);
     }
 
     public Transaction update(Transaction newTransaction) {
         Transaction existentTransaction = findById(newTransaction.getId());
+
+        existentTransaction.getWallet().subtractAmount(existentTransaction.getAmount(), existentTransaction.getCategory().getCategoryType());
         updateTransactionData(existentTransaction, newTransaction);
+        existentTransaction.getWallet().addAmount(existentTransaction.getAmount(), existentTransaction.getCategory().getCategoryType());
+
+        walletRepository.save(existentTransaction.getWallet());
+
         return repository.save(existentTransaction);
     }
 
     public void delete(Integer id) {
-        if(!existsById(id)){
-            throw new ObjectNotFoundException("Transaction with id " + id + " was not found.");
-        }
+        Transaction transaction = findById(id);
+
+        transaction.getWallet().subtractAmount(transaction.getAmount(), transaction.getCategory().getCategoryType());
+        walletRepository.save(transaction.getWallet());
+
         repository.deleteById(id);
     }
 

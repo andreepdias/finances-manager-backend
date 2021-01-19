@@ -13,12 +13,12 @@ public class UserDTO {
 
     private Integer id;
 
-    @NotEmpty(message = "{field.name.required}")
+    @NotEmpty(message = "{field.dto.name.required}")
     private String name;
 
-    @NotEmpty(message = "{field.email.required}")
+    @NotEmpty(message = "{field.dto.email.required}")
     private String email;
 
-    @NotEmpty(message = "{field.password.required}")
+    @NotEmpty(message = "{field.dto.password.required}")
     private String password;
 }

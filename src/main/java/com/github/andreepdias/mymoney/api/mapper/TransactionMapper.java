@@ -29,7 +29,7 @@ public class TransactionMapper {
 
     public Transaction  toEntity(TransactionDTO dto){
         Transaction transaction = mapper.map(dto, Transaction.class);
-        transaction.setDate(LocalDate.parse(dto.getDate(), DateTimeFormatter.ofPattern("d/MM/yyyy")));
+        transaction.setDate(LocalDate.parse(dto.getDate(), DateTimeFormatter.ofPattern("d/M/yyyy")));
 
         try{
             Category category = categoryService.findById(dto.getCategoryId());

@@ -1,16 +1,15 @@
 package com.github.andreepdias.mymoney.model.entity;
 
 import com.github.andreepdias.mymoney.model.enumerator.CategoryType;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
 
 @Entity
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class Category {
@@ -27,5 +26,9 @@ public class Category {
 
     @Column
     private CategoryType categoryType;
+
+    @ManyToOne
+    @JoinColumn
+    private User user;
 
 }

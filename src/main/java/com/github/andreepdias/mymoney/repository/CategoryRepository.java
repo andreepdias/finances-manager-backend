@@ -12,7 +12,7 @@ import java.util.List;
 @Repository
 public interface CategoryRepository extends JpaRepository<Category, Integer> {
 
-    Page<Category> findAllByOrderByCategoryTypeAscNameAsc(Pageable pageable);
+    Page<Category> findAllByUserIdOrderByCategoryTypeAscNameAsc(Integer userId, Pageable pageable);
 
-    List<Category> findAllByOrderByCategoryTypeAscNameAsc();
+    List<Category> findAllByUserIdOrderByCategoryTypeAscNameAsc(Integer userId);
 }
